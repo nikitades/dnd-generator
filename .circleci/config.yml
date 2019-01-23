@@ -48,8 +48,8 @@ jobs:
                 -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
                 -rIvzO \
                 --include public_html/bundles \
-                --exclude .git
-                --exclude .circleci
+                --exclude .git \
+                --exclude .circleci \
                 --filter=":- .gitignore" \
                 --exclude authorized_keys \
                 --delete-before \
