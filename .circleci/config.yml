@@ -51,7 +51,7 @@ jobs:
                 --exclude authorized_keys \
                 --exclude . \
                 --exclude .. \
-                --include ./public_html/bundles/
+                --include ./public_html/bundles/ \
                 . $ssh_login@$remote_host:$remote_path
 
 workflows:
