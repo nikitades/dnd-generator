@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   GetCode:
     docker:
-      - image: alpine:latest
+      - image: circleci/php:7.3.1-fpm-stretch
     steps:
       - checkout
       - persist_to_workspace:
@@ -11,7 +11,7 @@ jobs:
             - .
   BuildJS:
     docker:
-      - image: node:latest
+      - image: circleci/php:7.3.1-fpm-stretch
     steps:
       - attach_workspace:
           at: .
@@ -23,12 +23,12 @@ jobs:
             npm run prod
   Deploy:
     docker:
-      - image: alpine:latest
+      - image: circleci/php:7.3.1-fpm-stretch
     steps:
       - run:
           name: Deploying
           command: |
-            apk add rsync
+            apt install rsync
             echo $ssh_key > ~/.key
             rsync --filter=":- .gitignore" -e "ssh -i ~/.key" -avz ./ $ssh_login@$remote_host:$remote_path 
 
