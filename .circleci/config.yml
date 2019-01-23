@@ -15,16 +15,20 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - restore_cache:
+          keys:
+            - dndgen-cache-{{ checksum "package.json" }}
       - run:
           name: Building JS
           command: |
             cd ./ClientApp
             npm install
             npm run prod
-      - persist_to_workspace:
-          root: .
+      - save_cache:
           paths:
-            - .
+            - ./public_html/bundles/
+          key: dndgen-cache-{{ checksum "package.json" }}
+          name: DndGEN Caches
   Deploy:
     docker:
       - image: circleci/php:7.3.1-fpm-stretch-node
@@ -34,6 +38,9 @@ jobs:
             - $ssh_fprint
       - attach_workspace:
           at: .
+      - restore_cache:
+          keys:
+            - dndgen-cache-{{ checksum "package.json" }}
       - run:
           name: Deploying
           command: |
