@@ -14,7 +14,10 @@ jobs:
     steps:
       - run:
           name: Building JS
-          command: npm run prod
+          command: |
+            cd ./ClientApp
+            npm install
+            npm run prod
   Deploy:
     docker:
       - image: alpine:latest
