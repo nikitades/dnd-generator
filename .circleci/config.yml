@@ -66,3 +66,6 @@ workflows:
       - Deploy:
           requires:
             - BuildJS
+      - Post-deploy:
+          requires:
+            - Deploy
