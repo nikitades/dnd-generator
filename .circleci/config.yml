@@ -28,12 +28,13 @@ jobs:
       - run:
           name: Deploying
           command: |
-            sudo apt install rsync
             mkdir ~/.ssh
-            echo $ssh_key > ~/.ssh/id_rsa
-            chmod 700 ~/.ssh
-            chmod 600 ~/.ssh/id_rsa
-            rsync --filter=":- .gitignore" -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" -avz ./ $ssh_login@$remote_host:$remote_path 
+            echo "Host ilovek.bget.ru" >> ~/.ssh/config
+            echo "  Username $ssh_login"
+            echo "  IdentityFile $ssh_key"
+            echo "  IdentitiesOnly yes"
+            echo "  StrictHostKeyChecking no"
+            rsync --filter=":- .gitignore" -avz ./ $ssh_login@$remote_host:$remote_path 
 
 workflows:
   version: 2
