@@ -27,7 +27,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - $ssh_key
+            - $ssh_fprint
       - run:
           name: Deploying
           command: |
