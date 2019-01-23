@@ -10,15 +10,19 @@ jobs:
           command: |
             pwd
             ls -la
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
   BuildJS:
     docker:
       - image: node:latest
     steps:
+      - attach_workspace:
+          at: ~/repo
       - run:
           name: Building JS
           command: |
-            pwd
-            ls -la
             cd ./ClientApp
             npm install
             npm run prod
@@ -29,7 +33,6 @@ jobs:
       - run:
           name: Deploying
           command: |
-            ls -la
             apk add rsync
             echo $ssh_key > ~/.key
             rsync --filter=":- .gitignore" -e "ssh -i ~/.key" -avz ./ $ssh_login@$remote_host:$remote_path 
