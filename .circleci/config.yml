@@ -50,8 +50,6 @@ jobs:
                 -rltvzO \
                 --include ./public_html/bundles/ \
                 --exclude authorized_keys \
-                --exclude . \
-                --exclude .. \
                 . $ssh_login@$remote_host:$remote_path
 
 workflows:
