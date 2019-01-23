@@ -25,16 +25,13 @@ jobs:
     docker:
       - image: circleci/php:7.3.1-fpm-stretch-node
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - $ssh_key
       - run:
           name: Deploying
           command: |
-            mkdir ~/.ssh
-            echo "Host ilovek.bget.ru" >> ~/.ssh/config
-            echo "  Username $ssh_login" >> ~/.ssh/config
-            echo "  IdentityFile $ssh_key" >> ~/.ssh/config
-            echo "  IdentitiesOnly yes" >> ~/.ssh/config
-            echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-            rsync --filter=":- .gitignore" -avz ./ $ssh_login@$remote_host:$remote_path 
+            rsync -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --filter=":- .gitignore" -avz ./ $ssh_login@$remote_host:$remote_path 
 
 workflows:
   version: 2
