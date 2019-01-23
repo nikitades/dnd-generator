@@ -53,7 +53,10 @@ jobs:
       - run:
           name: Post-deploy setup
           command: |
-            ssh $ssh_login@$remote_host "if [ ! -f ./env.ini ]; then cp env.ini.example env.ini fi"
+            ssh \
+              -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              $ssh_login@$remote_host "if [ ! -f ./env.ini ]; then cp env.ini.example env.ini fi"
 
 workflows:
   version: 2
