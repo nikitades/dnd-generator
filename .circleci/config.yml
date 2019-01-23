@@ -53,6 +53,7 @@ jobs:
                 --filter=":- .gitignore" \
                 --exclude authorized_keys \
                 --delete-before \
+                --ignore-existing \
                 . $ssh_login@$remote_host:$remote_path
 
 workflows:
