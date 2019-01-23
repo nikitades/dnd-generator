@@ -46,7 +46,7 @@ jobs:
           command: |
             rsync \
                 -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-                -avzO \
+                -rzv \
                 --include public_html/bundles \
                 --exclude .git \
                 --exclude .circleci \
