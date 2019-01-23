@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/php:7.3.1-fpm-stretch-node
     steps:
-      - checkout  
+      - checkout
       - persist_to_workspace:
           root: .
           paths:
@@ -40,7 +40,20 @@ jobs:
                 --exclude authorized_keys \
                 --exclude . \
                 --exclude .. \
-                . $ssh_login@$remote_host:$remote_path 
+                . $ssh_login@$remote_host:$remote_path
+    PostBuild:
+      docker:
+        - image: circleci/php:7.3.1-fpm-stretch-node
+      steps:
+        - attach_workspace:
+            at: .
+        - add_ssh_keys:
+            fingerprints:
+              - $ssh_fprint
+        - run:
+            name: Post-deploy setup
+            command: |
+              ssh $ssh_login@$remote_host "if [ ! -f ./env.ini ]; then cp env.ini.example env.ini fi"
 
 workflows:
   version: 2
