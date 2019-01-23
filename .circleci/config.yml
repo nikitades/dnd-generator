@@ -2,7 +2,7 @@ version: 2.0
 jobs:
   GetCode:
     docker:
-      - image: circleci/php:7.3.1-fpm-stretch
+      - image: circleci/php:7.3.1-fpm-stretch-node
     steps:
       - checkout
       - persist_to_workspace:
@@ -11,7 +11,7 @@ jobs:
             - .
   BuildJS:
     docker:
-      - image: circleci/php:7.3.1-fpm-stretch
+      - image: circleci/php:7.3.1-fpm-stretch-node
     steps:
       - attach_workspace:
           at: .
@@ -23,7 +23,7 @@ jobs:
             npm run prod
   Deploy:
     docker:
-      - image: circleci/php:7.3.1-fpm-stretch
+      - image: circleci/php:7.3.1-fpm-stretch-node
     steps:
       - run:
           name: Deploying
