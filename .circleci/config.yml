@@ -44,15 +44,14 @@ jobs:
       - run:
           name: Deploying
           command: |
-            ls -la public_html/bundles/
             rsync \
                 -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
                 --filter=":- .gitignore" \
                 -rltvzO \
+                --include ./public_html/bundles/ \
                 --exclude authorized_keys \
                 --exclude . \
                 --exclude .. \
-                --include ./public_html/bundles/ \
                 . $ssh_login@$remote_host:$remote_path
 
 workflows:
