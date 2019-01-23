@@ -46,9 +46,9 @@ jobs:
           command: |
             rsync \
                 -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-                --filter=":- .gitignore" \
                 -rltvzO \
                 --include ./public_html/bundles/ \
+                --filter=":- .gitignore" \
                 --exclude authorized_keys \
                 . $ssh_login@$remote_host:$remote_path
 
