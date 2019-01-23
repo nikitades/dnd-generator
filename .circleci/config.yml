@@ -23,5 +23,18 @@ jobs:
           name: Deploying
           command: |
             ls -la
+            apk add rsync
             echo $ssh_key > ~/.key
             rsync --filter=":- .gitignore" -e "ssh -i ~/.key" -avz ./ $ssh_login@$remote_host:$remote_path 
+
+workflows:
+  version: 2
+  BaseWorkflow:
+    jobs:
+      - GetCode
+      - BuildJS:
+          requires:
+            - GetCode
+      - Deploy:
+          requires:
+            - BuildJS
