@@ -41,19 +41,19 @@ jobs:
                 --exclude . \
                 --exclude .. \
                 . $ssh_login@$remote_host:$remote_path
-    PostDeploy:
-      docker:
-        - image: circleci/php:7.3.1-fpm-stretch-node
-      steps:
-        - attach_workspace:
-            at: .
-        - add_ssh_keys:
-            fingerprints:
-              - $ssh_fprint
-        - run:
-            name: Post-deploy setup
-            command: |
-              ssh $ssh_login@$remote_host "if [ ! -f ./env.ini ]; then cp env.ini.example env.ini fi"
+  PostDeploy:
+    docker:
+      - image: circleci/php:7.3.1-fpm-stretch-node
+    steps:
+      - attach_workspace:
+          at: .
+      - add_ssh_keys:
+          fingerprints:
+            - $ssh_fprint
+      - run:
+          name: Post-deploy setup
+          command: |
+            ssh $ssh_login@$remote_host "if [ ! -f ./env.ini ]; then cp env.ini.example env.ini fi"
 
 workflows:
   version: 2
