@@ -6,7 +6,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Ooowooo
+          command: touch 1.txt && echo "zhoppkkaaaaa" > 1.txt
+      - run:
           name: Keksmith
           command: |
             ls -la
             pwd
+      - run:
+          name: Zoppa test
+          command: cat 1.txt
