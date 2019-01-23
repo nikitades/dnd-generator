@@ -1,18 +1,27 @@
 version: 2.0
 jobs:
-  build:
+  GetCode:
     docker:
-      - image: alpine:3.7
+      - image: alpine:latest
     steps:
       - checkout
       - run:
-          name: Ooowooo
-          command: touch 1.txt && echo "zhoppkkaaaaa" > 1.txt
+          name: Checking out
+          command: ls -la
+  BuildJS:
+    docker:
+      - image: node:latest
+    steps:
       - run:
-          name: Keksmith
+          name: Building JS
+          command: npm run prod
+  Deploy:
+    docker:
+      - image: alpine:latest
+    steps:
+      - run:
+          name: Deploying
           command: |
             ls -la
-            pwd
-      - run:
-          name: Zoppa test
-          command: cat 1.txt
+            echo $ssh_key > ~/.key
+            rsync --filter=":- .gitignore" -e "ssh -i ~/.key" -avz ./ $ssh_login@$remote_host:$remote_path 
