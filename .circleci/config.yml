@@ -5,13 +5,8 @@ jobs:
       - image: alpine:latest
     steps:
       - checkout
-      - run:
-          name: After check out
-          command: |
-            pwd
-            ls -la
       - persist_to_workspace:
-          root: /root/project
+          root: .
           paths:
             - .
   BuildJS:
@@ -19,7 +14,7 @@ jobs:
       - image: node:latest
     steps:
       - attach_workspace:
-          at: /root/project
+          at: .
       - run:
           name: Building JS
           command: |
