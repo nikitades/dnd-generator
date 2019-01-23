@@ -30,10 +30,10 @@ jobs:
           command: |
             mkdir ~/.ssh
             echo "Host ilovek.bget.ru" >> ~/.ssh/config
-            echo "  Username $ssh_login"
-            echo "  IdentityFile $ssh_key"
-            echo "  IdentitiesOnly yes"
-            echo "  StrictHostKeyChecking no"
+            echo "  Username $ssh_login" >> ~/.ssh/config
+            echo "  IdentityFile $ssh_key" >> ~/.ssh/config
+            echo "  IdentitiesOnly yes" >> ~/.ssh/config
+            echo "  StrictHostKeyChecking no" >> ~/.ssh/config
             rsync --filter=":- .gitignore" -avz ./ $ssh_login@$remote_host:$remote_path 
 
 workflows:
