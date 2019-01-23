@@ -67,6 +67,9 @@ export default {
             <img :src="versionBadgeUrl" alt="DNDGen version">
           </div>
           <div class="column">
+            <span class="has-background-red">Works</span>
+          </div>
+          <div class="column">
             <img src="/made-with-bulma.png" alt="Made with Bulma" width="128" height="24">
           </div>
         </div>
