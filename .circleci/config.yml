@@ -44,6 +44,7 @@ jobs:
       - run:
           name: Deploying
           command: |
+            ls -la public_html/bundles/
             rsync \
                 -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
                 --filter=":- .gitignore" \
