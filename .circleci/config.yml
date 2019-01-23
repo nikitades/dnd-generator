@@ -50,9 +50,8 @@ jobs:
                 --include public_html/bundles \
                 --exclude .git \
                 --exclude .circleci \
-                --filter=":- .gitignore" \
+                --del --ignore-times --exclude-from=".gitignore" \
                 --exclude authorized_keys \
-                --delete-before \
                 . $ssh_login@$remote_host:$remote_path
 
 workflows:
