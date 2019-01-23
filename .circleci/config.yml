@@ -6,8 +6,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Checking out
-          command: ls -la
+          name: After check out
+          command: |
+            pwd
+            ls -la
   BuildJS:
     docker:
       - image: node:latest
@@ -15,6 +17,7 @@ jobs:
       - run:
           name: Building JS
           command: |
+            pwd
             ls -la
             cd ./ClientApp
             npm install
