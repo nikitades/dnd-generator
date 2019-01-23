@@ -11,7 +11,7 @@ jobs:
             pwd
             ls -la
       - persist_to_workspace:
-          root: ~/repo
+          root: /root/project
           paths:
             - .
   BuildJS:
@@ -19,7 +19,7 @@ jobs:
       - image: node:latest
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: /root/project
       - run:
           name: Building JS
           command: |
