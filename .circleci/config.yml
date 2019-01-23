@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Deploying
           command: |
-            apt install rsync
+            sudo apt install rsync
             echo $ssh_key > ~/.key
             rsync --filter=":- .gitignore" -e "ssh -i ~/.key" -avz ./ $ssh_login@$remote_host:$remote_path 
 
