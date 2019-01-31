@@ -1,20 +1,10 @@
 version: "0.1"
 services:
-  nginx:
-    image: nginx:latest
+  golang:
+    build: "."
+    dockerfile: ./docker_stuff/golang.dockerfile
     ports:
       - "8080:80"
-    volumes:
-      - ./:/server
-      - ./docker_stuff/site.conf:/etc/nginx/conf.d/default.conf
-    links:
-    - php-fpm
-    - db
-  php-fpm:
-    build: "."
-    dockerfile: ./docker_stuff/php-fpm.dockerfile
-    volumes:
-      - ./:/server
     links:
       - db
   db:
