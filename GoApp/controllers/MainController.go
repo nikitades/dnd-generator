@@ -8,5 +8,5 @@ type MainController struct {
 }
 
 func (ctr *MainController) Handle(ctx *fasthttp.RequestCtx) {
-	ctx.WriteString("Govno")
+	ctx.WriteString("Govno 123")
 }

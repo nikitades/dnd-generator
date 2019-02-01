@@ -1,16 +1,15 @@
 package main
 
 import (
-	"./controllers"
+	"dnd-generator/GoApp/controllers"
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
 	"log"
 )
 
 func main() {
-	var a = controllers.MainController{}
+	var c = controllers.MainController{}
 	router := fasthttprouter.New()
-	router.GET("/", a.Handle)
-
-	log.Fatal(fasthttp.ListenAndServe(":8080", router.Handler))
+	router.GET("/", c.Handle)
+	log.Fatal(fasthttp.ListenAndServe(":80", router.Handler))
 }
