@@ -49,12 +49,21 @@
   revision = "e5f51c11919d4f66400334047b897ef0a94c6f3c"
   version = "v20180529"
 
+[[projects]]
+  digest = "1:9afc648e7c99fee142c81969af7fd6f7f150069296fd262cc4ab55e231093140"
+  name = "github.com/valyala/quicktemplate"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "de41ba48f1d9953aca12983c953532f3776b4347"
+  version = "v20160617"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/buaazp/fasthttprouter",
     "github.com/valyala/fasthttp",
+    "github.com/valyala/quicktemplate",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

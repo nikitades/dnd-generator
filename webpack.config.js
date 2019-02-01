@@ -21,7 +21,7 @@ module.exports = {
         open: true,
         proxy: {
             "*": {
-                target: "http://localhost:8080",
+                target: "http://localhost:80",
                 secure: false
             }
         }
@@ -61,7 +61,7 @@ module.exports = {
                     loader: "file-loader",
                     options: {
                         name: "[name].[ext]",
-                        outputPath: "fonts"
+                        outputPath: "../static/bundles/fonts"
                     }
                 }]
             }

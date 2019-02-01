@@ -11,6 +11,8 @@ func main() {
 	var c = controllers.NewMainController()
 	router := fasthttprouter.New()
 	router.GET("/", c.MainPageHandler)
+	router.GET("/getStartInfo", c.GetStartInfo)
+	router.POST("/getItems", c.GetItems)
 	router.ServeFiles("/static/*filepath", "../public_html")
 	log.Fatal(fasthttp.ListenAndServe(":80", router.Handler))
 }
