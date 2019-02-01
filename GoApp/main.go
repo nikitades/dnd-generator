@@ -8,8 +8,9 @@ import (
 )
 
 func main() {
-	var c = controllers.MainController{}
+	var c = controllers.NewMainController()
 	router := fasthttprouter.New()
-	router.GET("/", c.Handle)
+	router.GET("/", c.MainPageHandler)
+	router.ServeFiles("/static/*filepath", "../public_html")
 	log.Fatal(fasthttp.ListenAndServe(":80", router.Handler))
 }

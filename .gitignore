@@ -3,4 +3,5 @@ env.ini
 node_modules
 vendor
 public_html/bundles/
+GoApp/templates/*.go
 .vscode
