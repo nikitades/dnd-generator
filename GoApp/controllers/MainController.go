@@ -36,15 +36,15 @@ type ItemsResponse struct {
 
 var defaultBundleName = "/bundles/app.min.js"
 
-func NewMainController() *MainController {
+func NewMainController(s models.Settings) *MainController {
 	fmt.Println("Main controller created")
 	mc := new(MainController)
 	mc.bundleName = defaultBundleName
 	var err error
-	mc.db, err = sqlx.Connect("postgres", "user=postgres dbname=dnd password=dnd host=localhost sslmode=disable")
+	mc.db, err = sqlx.Connect("postgres", fmt.Sprintf("user=%v dbname=%v password=%v host=%v sslmode=disable port=%v", s.DB_USER, s.DB_NAME, s.DB_PASSWORD, s.DB_HOST, s.DB_PORT))
 	if err != nil {
 		log.Println(err)
-		panic("Failed to connect to DB")
+		log.Fatal("Failed to connect to DB")
 	}
 	return mc
 }
@@ -52,7 +52,7 @@ func NewMainController() *MainController {
 func (ctr *MainController) MainPageHandler(ctx *fasthttp.RequestCtx) {
 	modTime, err := models.GetBundleMTime(ctr.bundleName)
 	if err != nil {
-		panic("Failed to get a bundle mod ")
+		log.Fatal("Failed to get a bundle mod ")
 	}
 	markup := templates.Main(modTime)
 	ctx.SetContentType("text/html; charset=utf8")

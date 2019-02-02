@@ -2,13 +2,15 @@ package main
 
 import (
 	"dnd-generator/GoApp/controllers"
+	"dnd-generator/GoApp/models"
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
 	"log"
 )
 
 func main() {
-	var c = controllers.NewMainController()
+	settings := models.LoadSettings("../env.ini")
+	var c = controllers.NewMainController(settings)
 	router := fasthttprouter.New()
 	router.GET("/", c.MainPageHandler)
 	router.GET("/getStartInfo", c.GetStartInfo)
