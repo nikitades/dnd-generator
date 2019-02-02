@@ -2,6 +2,6 @@ env.php
 env.ini
 node_modules
 vendor
-public_html/bundles/
+public_html/static/bundles/
 GoApp/templates/*.go
 .vscode

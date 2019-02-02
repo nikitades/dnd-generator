@@ -34,7 +34,7 @@ type ItemsResponse struct {
 	Items          []models.Item       `json:"result"`
 }
 
-var defaultBundleName = "/bundles/app.min.js"
+var defaultBundleName = "/static/bundles/app.min.js"
 
 func NewMainController(s models.Settings) *MainController {
 	fmt.Println("Main controller created")

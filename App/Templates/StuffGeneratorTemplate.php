@@ -16,7 +16,7 @@ class StuffGeneratorTemplate extends AbstractTemplate
         </head>
         <body>
             <div id="app"></div>
-            <script src="/bundles/app.min.js?v=<?=filemtime(Core::$root . "/bundles/app.min.js")?>"></script>
+            <script src="/static/bundles/app.min.js?v=<?=filemtime(Core::$root . "/static/bundles/app.min.js")?>"></script>
         </body>
         </html>
         <?php
