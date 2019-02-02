@@ -27,7 +27,6 @@ const dbmanager = {
         return openDb('a99lvlWizard', 3, upgradedDB => {
             switch (upgradedDB.oldVersion) {
                 case 1:
-                    upgradedDB.deleteObjectStore(DEFAULT_STORE);
                     upgradedDB.createObjectStore(DEFAULT_STORE, {
                         keyPath: "uuid"
                     });
@@ -39,7 +38,7 @@ const dbmanager = {
                     });
                     break;
                 default:
-                    throw new Error("Unknown IDB version!");
+                    throw new Error("Unknown IDB version! (" + upgradedDB.oldVersion + ")");
                     break;
             }
         })

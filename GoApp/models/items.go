@@ -5,36 +5,27 @@ import (
 	"log"
 )
 
-type ItemCategory struct {
-	Id int `json:"id"`
-}
-
 type Item struct {
 	Id           int    `json:"id"`
 	Name         string `json:"name"`
-	CategoryName string `json:"category_name"`
-	TypeName     string `json:"type_name"`
+	CategoryName string `json:"category_name" db:"category_name"`
+	TypeName     string `json:"type_name" db:"type_name"`
 	Icon         string `json:"icon"`
 }
 
-func GetItems(db *sqlx.DB, typeIDs []int, count int) []Item {
-	categories := []ItemCategory{}
-	var err error
-	/*
-		TODO:
-			1. Применить на первый запрос sqlx.In
-			2. Ребинд
-			3. Во втором запросе тоже ребинд и заюзать
-	*/
-	err = db.Select(&categories, `SELECT id 
-	FROM stuff_category 
-	WHERE stuff_type_id IN (?)
-	ORDER BY RANDOM() 
-	LIMIT 1`, typeIDs)
-	items := []Item{}
-	err = db.Select(&items, "SELECT")
+func GetRandomItemOfCategory(db *sqlx.DB, category ItemCategory) Item {
+	item := Item{}
+	err := db.Get(&item, `
+		SELECT stuff.id, stuff.name, stuff_category.name as category_name, stuff_type.name as type_name, stuff.icon 
+		FROM stuff
+		LEFT JOIN stuff_category ON stuff_category.id = stuff.category_id
+		LEFT JOIN stuff_type ON stuff_type.id = stuff_category.stuff_type_id
+		WHERE stuff.category_id = $1
+		ORDER BY RANDOM()
+		LIMIT 1
+	`, category.Id)
 	if err != nil {
 		log.Println(err)
 	}
-	return items
+	return item
 }

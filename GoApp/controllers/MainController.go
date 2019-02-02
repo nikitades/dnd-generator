@@ -9,6 +9,12 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/valyala/fasthttp"
 	"log"
+	"strconv"
+)
+
+const (
+	MIN_ITEMS_COUNT = 1
+	MAX_ITEMS_COUNT = 100
 )
 
 type MainController struct {
@@ -21,7 +27,11 @@ type StartInfoResponse struct {
 }
 
 type ItemsResponse struct {
-	Items []models.Item `json:"items"`
+	AllTypes       []models.StuffType  `json:"types"`
+	Count          int64               `json:"count"`
+	Rarity         []models.ItemRarity `json:"rarity"`
+	RequestedTypes []int64             `json:"requested_types"`
+	Items          []models.Item       `json:"result"`
 }
 
 var defaultBundleName = "/bundles/app.min.js"
@@ -61,14 +71,56 @@ func (ctr *MainController) GetStartInfo(ctx *fasthttp.RequestCtx) {
 }
 
 func (ctr *MainController) GetItems(ctx *fasthttp.RequestCtx) {
-	args := ctx.QueryArgs()
-	fmt.Println(args)
-	items := models.GetItems(ctr.db)
-	responseObj := ItemsResponse{items}
+	args := ctx.PostArgs()
+	types := make([]int64, 0)
+	var count int64
+	var err error
+	args.VisitAll(func(key, value []byte) {
+		switch string(key) {
+		case "types[]":
+			var intTypeId int64
+			intTypeId, err = strconv.ParseInt(string(value), 10, 0)
+			if err != nil {
+				log.Println("Wrong type ID given")
+				break
+			}
+			types = append(types, intTypeId)
+			break
+		case "count":
+			count, err = strconv.ParseInt(string(value), 10, 0)
+			if err != nil {
+				log.Println("Wrong items count given")
+			}
+			if count > MAX_ITEMS_COUNT {
+				count = MAX_ITEMS_COUNT
+			}
+			if count < MIN_ITEMS_COUNT {
+				count = MIN_ITEMS_COUNT
+			}
+		}
+	})
+	items := ctr.getItemsOfTypeAndCount(types, count)
+	responseObj := ItemsResponse{
+		AllTypes:       models.GetStuffTypes(ctr.db),
+		Count:          count,
+		Rarity:         models.GetRarities(ctr.db),
+		RequestedTypes: types,
+		Items:          items,
+	}
 	response, err := json.Marshal(responseObj)
 	if err != nil {
 		log.Println("Failed to serialize ItemsResponse")
 	}
 	ctx.SetContentType("application/json; charset=utf8")
 	ctx.SetBodyString(string(response))
+}
+
+func (ctr *MainController) getItemsOfTypeAndCount(types []int64, count int64) []models.Item {
+	outputItems := []models.Item{}
+	for i := 0; i < int(count); i++ {
+		randomCategory := models.GetRandomCategoryOfTypes(ctr.db, types)
+		randomItemsOfCategory := models.GetRandomItemOfCategory(ctr.db, randomCategory)
+		outputItems = append(outputItems, randomItemsOfCategory)
+	}
+	return outputItems
 }
