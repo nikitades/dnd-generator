@@ -5,9 +5,9 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 module.exports = {
     entry: "./ClientApp/index.js",
     output: {
-        path: path.resolve(__dirname, "public_html", "bundles"),
+        path: path.resolve(__dirname, "public_html", "static", "bundles"),
         filename: "app.min.js",
-        publicPath: "/bundles/"
+        publicPath: "/static/bundles/"
     },
     plugins: [
         new VueLoaderPlugin()
