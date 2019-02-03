@@ -60,7 +60,8 @@ func (ctr *MainController) MainPageHandler(ctx *fasthttp.RequestCtx) {
 }
 
 func (ctr *MainController) GetStartInfo(ctx *fasthttp.RequestCtx) {
-	if types, err := models.GetStuffTypes(ctr.db); err != nil {
+	types, err := models.GetStuffTypes(ctr.db)
+	if err != nil {
 		log.Println(err)
 		log.Println("Failed to get stuff types")
 	}
@@ -105,11 +106,13 @@ func (ctr *MainController) GetItems(ctx *fasthttp.RequestCtx) {
 		}
 	})
 	items := ctr.getItemsOfTypeAndCount(types, count)
-	if rarities, err := models.GetRarities(ctr.db); err != nil {
+	rarities, err := models.GetRarities(ctr.db)
+	if err != nil {
 		log.Println(err)
 		log.Println("Failed to get rarities")
 	}
-	if stuffTypes, err := models.GetStuffTypes(ctr.db); err != nil {
+	stuffTypes, err := models.GetStuffTypes(ctr.db)
+	if err != nil {
 		log.Println(err)
 		log.Println("Failed to get stuff types")
 	}
