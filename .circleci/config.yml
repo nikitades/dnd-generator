@@ -26,7 +26,7 @@ jobs:
             npm run prod
       - save_cache:
           paths:
-            - ./public_html/bundles/
+            - ./public_html/static/bundles/
           key: dndgen-npm-cache-{{ .Revision }}-{{ checksum "webpack.config.js"}}
           name: DndGEN Caches
   BuildPHP:
@@ -65,7 +65,7 @@ jobs:
             rsync \
                 -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
                 -rzvI \
-                --include public_html/bundles \
+                --include public_html/static/bundles \
                 --include vendor \
                 --exclude .git \
                 --exclude .circleci \
