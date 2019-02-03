@@ -30,8 +30,24 @@
   version = "0.1.1"
 
 [[constraint]]
+  name = "github.com/go-ini/ini"
+  version = "1.41.0"
+
+[[constraint]]
+  name = "github.com/jmoiron/sqlx"
+  version = "1.2.0"
+
+[[constraint]]
+  name = "github.com/lib/pq"
+  version = "1.0.0"
+
+[[constraint]]
   name = "github.com/valyala/fasthttp"
   version = "20180529.0.0"
+
+[[constraint]]
+  name = "github.com/valyala/quicktemplate"
+  version = "20160617.0.0"
 
 [prune]
   go-tests = true
