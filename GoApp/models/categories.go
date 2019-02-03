@@ -1,19 +1,23 @@
 package models
 
 import (
+	"errors"
+	"fmt"
 	"github.com/jmoiron/sqlx"
-	"log"
 )
 
 type ItemCategory struct {
 	Id int `json:"id"`
 }
 
-func GetRandomCategoryOfTypes(db *sqlx.DB, typeIDs []int64) ItemCategory {
+func GetRandomCategoryOfTypes(db *sqlx.DB, typeIDs []int64) (ItemCategory, error) {
 	category := ItemCategory{}
 	var err error
 
-	// TODO: Получить случайную категорию где типы такие как дано
+	if len(typeIDs) == 0 {
+		return category, errors.New("Category not found")
+	}
+
 	prequery, args, err := sqlx.In(`
 		SELECT id
 		FROM stuff_category
@@ -23,12 +27,13 @@ func GetRandomCategoryOfTypes(db *sqlx.DB, typeIDs []int64) ItemCategory {
 	`, typeIDs)
 
 	if err != nil {
-		log.Println(err)
+		return category, err
 	}
 	query := db.Rebind(prequery)
+	fmt.Println(query)
 	err = db.Get(&category, query, args...)
 	if err != nil {
-		log.Println(err)
+		return category, err
 	}
-	return category
+	return category, nil
 }

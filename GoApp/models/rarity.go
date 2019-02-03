@@ -1,7 +1,6 @@
 package models
 
 import (
-	"log"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -11,11 +10,11 @@ type ItemRarity struct {
 	Code string
 }
 
-func GetRarities(db *sqlx.DB) []ItemRarity {
+func GetRarities(db *sqlx.DB) ([]ItemRarity, error) {
 	rarities := []ItemRarity{}
 	err := db.Select(&rarities, "SELECT id, name, code FROM stuff_rarity")
 	if err != nil {
-		log.Println(err)
+		return rarities, err
 	}
-	return rarities
+	return rarities, nil
 }

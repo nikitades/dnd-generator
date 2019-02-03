@@ -60,10 +60,14 @@ func (ctr *MainController) MainPageHandler(ctx *fasthttp.RequestCtx) {
 }
 
 func (ctr *MainController) GetStartInfo(ctx *fasthttp.RequestCtx) {
-	types := models.GetStuffTypes(ctr.db)
+	if types, err := models.GetStuffTypes(ctr.db); err != nil {
+		log.Println(err)
+		log.Println("Failed to get stuff types")
+	}
 	responseObj := StartInfoResponse{types}
 	response, err := json.Marshal(responseObj)
 	if err != nil {
+		log.Println(err)
 		log.Println("Failed to serialize StartInfoResponse")
 	}
 	ctx.SetContentType("application/json; charset=utf8")
@@ -89,6 +93,7 @@ func (ctr *MainController) GetItems(ctx *fasthttp.RequestCtx) {
 		case "count":
 			count, err = strconv.ParseInt(string(value), 10, 0)
 			if err != nil {
+				log.Println(err)
 				log.Println("Wrong items count given")
 			}
 			if count > MAX_ITEMS_COUNT {
@@ -100,15 +105,24 @@ func (ctr *MainController) GetItems(ctx *fasthttp.RequestCtx) {
 		}
 	})
 	items := ctr.getItemsOfTypeAndCount(types, count)
+	if rarities, err := models.GetRarities(ctr.db); err != nil {
+		log.Println(err)
+		log.Println("Failed to get rarities")
+	}
+	if stuffTypes, err := models.GetStuffTypes(ctr.db); err != nil {
+		log.Println(err)
+		log.Println("Failed to get stuff types")
+	}
 	responseObj := ItemsResponse{
-		AllTypes:       models.GetStuffTypes(ctr.db),
+		AllTypes:       stuffTypes,
 		Count:          count,
-		Rarity:         models.GetRarities(ctr.db),
+		Rarity:         rarities,
 		RequestedTypes: types,
 		Items:          items,
 	}
 	response, err := json.Marshal(responseObj)
 	if err != nil {
+		log.Println(err)
 		log.Println("Failed to serialize ItemsResponse")
 	}
 	ctx.SetContentType("application/json; charset=utf8")
@@ -118,8 +132,16 @@ func (ctr *MainController) GetItems(ctx *fasthttp.RequestCtx) {
 func (ctr *MainController) getItemsOfTypeAndCount(types []int64, count int64) []models.Item {
 	outputItems := []models.Item{}
 	for i := 0; i < int(count); i++ {
-		randomCategory := models.GetRandomCategoryOfTypes(ctr.db, types)
-		randomItemsOfCategory := models.GetRandomItemOfCategory(ctr.db, randomCategory)
+		randomCategory, err := models.GetRandomCategoryOfTypes(ctr.db, types)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		randomItemsOfCategory, err := models.GetRandomItemOfCategory(ctr.db, randomCategory)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
 		outputItems = append(outputItems, randomItemsOfCategory)
 	}
 	return outputItems

@@ -2,7 +2,6 @@ package models
 
 import (
 	"github.com/jmoiron/sqlx"
-	"log"
 )
 
 type Item struct {
@@ -13,7 +12,7 @@ type Item struct {
 	Icon         string `json:"icon"`
 }
 
-func GetRandomItemOfCategory(db *sqlx.DB, category ItemCategory) Item {
+func GetRandomItemOfCategory(db *sqlx.DB, category ItemCategory) (Item, error) {
 	item := Item{}
 	err := db.Get(&item, `
 		SELECT stuff.id, stuff.name, stuff_category.name as category_name, stuff_type.name as type_name, stuff.icon 
@@ -25,7 +24,7 @@ func GetRandomItemOfCategory(db *sqlx.DB, category ItemCategory) Item {
 		LIMIT 1
 	`, category.Id)
 	if err != nil {
-		log.Println(err)
+		return item, err
 	}
-	return item
+	return item, nil
 }
