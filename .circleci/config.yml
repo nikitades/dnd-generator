@@ -17,7 +17,7 @@ jobs:
           at: .
       - restore_cache:
           keys:
-            - dndgen-npm-cache-{{ .Revision }}
+            - dndgen-npm-cache-{{ .Revision }}-{{ checksum "webpack.config.js"}}
       - run:
           name: Building JS
           command: |
@@ -27,7 +27,7 @@ jobs:
       - save_cache:
           paths:
             - ./public_html/bundles/
-          key: dndgen-npm-cache-{{ .Revision }}
+          key: dndgen-npm-cache-{{ .Revision }}-{{ checksum "webpack.config.js"}}
           name: DndGEN Caches
   BuildPHP:
     docker:
