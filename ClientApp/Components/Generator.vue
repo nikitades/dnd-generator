@@ -69,10 +69,10 @@ export default {
         <p class="help">&nbsp;</p>
         <div class="is-clearfix">
           <template v-if="mode === 'main'">
-            <a href="#" @click.prevent="toggleMode" class="button is-success is-pulled-right-mobile">Заглянуть в сундучок</a>
+            <a href="#" @click.prevent="toggleMode" class="button is-success is-pulled-right">Заглянуть в сундучок</a>
           </template>
           <template v-if="mode === 'stash'">
-            <a href="#" @click.prevent="toggleMode" class="button is-warning is-pulled-right-mobile">Прочь из сундучка</a>
+            <a href="#" @click.prevent="toggleMode" class="button is-warning is-pulled-right">Прочь из сундучка</a>
           </template>
         </div>
       </div>
