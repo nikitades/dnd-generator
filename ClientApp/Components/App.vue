@@ -11,7 +11,7 @@ const MODES = {
   STASH: "stash"
 };
 
-const VERSION = "2.1.1";
+const VERSION = "2.2";
 
 export default {
   components: {
